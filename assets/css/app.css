@@ -3,3 +3,28 @@
 @import "./liveview.css";
 @import "./petalplus.css";
 @import "tailwindcss/utilities";
+
+
+@layer base {
+  /* Add base styles here (eg. styles that are the defaults for common elements)
+    Example base style:
+    h1 {
+      @apply text-2xl;
+    }
+  */
+  body {
+    @apply background-image: url('https://picsum.photos/id/10/1900/1200');
+  }
+}
+
+@layer components {
+  /* Add component styles here (eg. buttons or tabs or anything that uses a number of styles)
+    Example component:
+    .btn-blue {
+      @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+    }
+  */
+}
+
+@layer utilities {
+}

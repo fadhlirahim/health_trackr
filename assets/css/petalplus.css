@@ -12,16 +12,28 @@ select.has-error:not(.phx-no-feedback) {
   @apply  !border-red-500 focus:  !border-red-500 !text-red-900 !placeholder-red-700 !bg-red-50 dark: !text-red-100 dark: !placeholder-red-300 dark: !bg-red-900 focus: !ring-red-500;
 }
 
-input[type=file_input].has-error:not(.phx-no-feedback) {
+input[type="file_input"].has-error:not(.phx-no-feedback) {
   @apply  !border-red-500 !rounded-md focus:  !border-red-500 !text-red-900 !placeholder-red-700 !bg-red-50 file: !border-none dark: !border-none dark: !bg-[#160B0B] dark:text-red-400;
 }
 
-input[type=checkbox].has-error:not(.phx-no-feedback) {
+input[type="checkbox"].has-error:not(.phx-no-feedback) {
   @apply  !border-red-500 !text-red-900 dark:  !text-red-200;
 }
 
-input[type=radio].has-error:not(.phx-no-feedback) {
+input[type="radio"].has-error:not(.phx-no-feedback) {
   @apply  !border-red-500;
+}
+
+/* If in tailwind.config.json, darkMode: 'media', use this: */
+/* @media (prefers-color-scheme: dark) {
+    ::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
+  } */
+
+/* If in tailwind.config.json, darkMode: 'class', use this: */
+.dark ::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 
 /* Modal animation */
