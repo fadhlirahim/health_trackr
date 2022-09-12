@@ -1,0 +1,101 @@
+body {
+  @apply antialiased relative bg-gray-200 font-sans;
+}
+
+header {
+  @apply mb-8;
+}
+
+h1 {
+  @apply text-center text-gray-900 font-extrabold text-4xl mb-8;
+}
+
+ul.examples {
+  @apply mt-8 text-2xl mx-auto max-w-xs list-disc;
+
+  li {
+    @apply mt-3;
+
+    a {
+      @apply underline;
+    }
+  }
+}
+
+.icon {
+  fill: currentColor;
+}
+
+header {
+  section {
+    @apply m-4 flex justify-end;
+  }
+
+  nav {
+    ul {
+      @apply flex justify-between;
+
+      li {
+        @apply mx-2 text-lg text-gray-700;
+
+        a:hover {
+          @apply underline;
+        }
+      }
+    }
+  }
+}
+
+.main {
+  @apply flex flex-1;
+
+  .wrapper {
+    @apply flex-1 max-w-2xl mr-auto px-6;
+  }
+
+  form {
+    @apply p-8 border-solid border border-gray-400 rounded-md mb-8;
+
+    .field {
+      @apply mb-4;
+    }
+
+    label {
+      @apply block text-lg font-medium text-gray-600 mb-2;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      @apply w-full appearance-none px-3 py-2 border border-gray-400 rounded-md transition duration-150 ease-in-out text-base text-xl;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      @apply outline-none border-indigo-300 ring ring-indigo-300;
+    }
+
+    button {
+      @apply py-2 px-4 border border-transparent font-medium rounded-md text-white bg-indigo-500 outline-none text-lg;
+    }
+
+    button:hover {
+      @apply bg-indigo-700;
+    }
+
+    a.cancel {
+      @apply ml-2 py-3 px-4 border border-gray-600 font-medium rounded-md text-gray-600 text-lg;
+    }
+
+    a.cancel:hover {
+      @apply bg-gray-700 text-white;
+    }
+
+    .invalid-feedback {
+      @apply mt-1 text-base text-red-600;
+    }
+  }
+
+  button {
+    @apply py-2 px-4 border border-transparent font-medium rounded-md text-white bg-green-500 transition duration-150 ease-in-out outline-none flex-initial text-lg;
+  }
+}
