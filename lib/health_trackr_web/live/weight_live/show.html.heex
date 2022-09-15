@@ -1,0 +1,31 @@
+<h1>Show Weight</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal title={"#{humanize(@live_action)} Weight"}>
+    <.live_component
+      module={HealthTrackrWeb.WeightLive.FormComponent}
+      id={@weight.id}
+      title={@page_title}
+      action={@live_action}
+      weight={@weight}
+      return_to={Routes.weight_show_path(@socket, :show, @weight)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @weight.date %>
+  </li>
+
+  <li>
+    <strong>Weight:</strong>
+    <%= @weight.weight %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.weight_show_path(@socket, :edit, @weight), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.weight_index_path(@socket, :index) %></span>

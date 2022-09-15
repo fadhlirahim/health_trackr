@@ -17,7 +17,13 @@ defmodule HealthTrackrWeb.Router do
   scope "/", HealthTrackrWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    live "/", WeightLive.Index, :index
+    live "/weights", WeightLive.Index, :index
+    live "/weights/new", WeightLive.Index, :new
+    live "/weights/:id/edit", WeightLive.Index, :edit
+
+    live "/weights/:id", WeightLive.Show, :show
+    live "/weights/:id/show/edit", WeightLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
