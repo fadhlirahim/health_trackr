@@ -4,9 +4,9 @@ defmodule HealthTrackrWeb.WeightLiveTest do
   import Phoenix.LiveViewTest
   import HealthTrackr.WeightsFixtures
 
-  @create_attrs %{date: %{day: 11, month: 9, year: 2022}, weight: 120.5}
-  @update_attrs %{date: %{day: 12, month: 9, year: 2022}, weight: 456.7}
-  @invalid_attrs %{date: %{day: 30, month: 2, year: 2022}, weight: nil}
+  @create_attrs %{date: "11/09/2022", weight: 120.5}
+  @update_attrs %{date: "11/09/2022", weight: 456.7}
+  @invalid_attrs %{date: nil, weight: nil}
 
   defp create_weight(_) do
     weight = weight_fixture()
@@ -25,14 +25,15 @@ defmodule HealthTrackrWeb.WeightLiveTest do
     test "saves new weight", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, Routes.weight_index_path(conn, :index))
 
-      assert index_live |> element("a", "New Weight") |> render_click() =~
-               "New Weight"
+      assert index_live
+             |> element("a", "New Weight")
+             |> render_click() =~ "New Weight"
 
       assert_patch(index_live, Routes.weight_index_path(conn, :new))
 
       assert index_live
              |> form("#weight-form", weight: @invalid_attrs)
-             |> render_change() =~ "is invalid"
+             |> render_change() =~ "blank"
 
       {:ok, _, html} =
         index_live
@@ -53,7 +54,7 @@ defmodule HealthTrackrWeb.WeightLiveTest do
 
       assert index_live
              |> form("#weight-form", weight: @invalid_attrs)
-             |> render_change() =~ "is invalid"
+             |> render_change() =~ "blank"
 
       {:ok, _, html} =
         index_live
@@ -91,13 +92,13 @@ defmodule HealthTrackrWeb.WeightLiveTest do
 
       assert show_live
              |> form("#weight-form", weight: @invalid_attrs)
-             |> render_change() =~ "is invalid"
+             |> render_change() =~ "blank"
 
       {:ok, _, html} =
         show_live
         |> form("#weight-form", weight: @update_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.weight_show_path(conn, :show, weight))
+        |> follow_redirect(conn, Routes.weight_index_path(conn, :index))
 
       assert html =~ "Weight updated successfully"
     end
