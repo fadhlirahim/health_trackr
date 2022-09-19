@@ -6,11 +6,12 @@ class LineChart {
       type: "line",
       data: {
         labels: labels,
+        fontcolor: ['rgb(243 244 246)', 'rgb(75, 192, 192)', 'rgb(75, 192, 192)'],
         datasets: [
           {
             label: "Weight",
             data: values,
-            borderColor: "#4c51bf",
+            borderColor: "rgb(75, 192, 192)",
           },
         ],
       },
@@ -51,6 +52,10 @@ class LineChart {
       labels.shift();
     }
 
+    this.chart.update();
+  }
+
+  updateChart() {
     this.chart.update();
   }
 }

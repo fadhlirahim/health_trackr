@@ -1,16 +1,20 @@
-<h1>Listing Weights</h1>
-
-<div id="charting">
-  <div>
-    <canvas id="chart-canvas"
-            phx-hook="LineChart"
-            data-chart-data={Jason.encode!(@chart_data)}>
-    </canvas>
+<div class="mb-8 sm:flex sm:justify-between sm:items-center">
+  <div class="mb-4 sm:mb-0">
+    <.h2 class="!mb-0">Weight Tracker</.h2>
   </div>
 </div>
 
-<%= if @live_action in [:new, :edit] do %>
+<div id="charting"
+     phx-update="ignore"
+     class="bg-gray-700">
 
+  <canvas id="chart-canvas"
+          phx-hook="LineChart"
+          data-chart-data={Jason.encode!(@chart_data)}>
+  </canvas>
+</div>
+
+<%= if @live_action in [:new, :edit] do %>
   <.modal title={"#{humanize(@live_action)} Weight"} >
     <.live_component
       module={HealthTrackrWeb.WeightLive.FormComponent}
@@ -52,5 +56,3 @@
     </.tr>
   <% end %>
 </.table>
-
-

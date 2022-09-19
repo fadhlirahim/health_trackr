@@ -6,7 +6,7 @@ defmodule HealthTrackrWeb.WeightLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-
+    if connected?(socket), do: Weights.subscribe()
 
     labels = list_weights()
              |> Enum.map(fn ts -> ts.date end)
@@ -23,8 +23,6 @@ defmodule HealthTrackrWeb.WeightLive.Index do
        current_reading: List.last(labels),
        weights: list_weights()
      )}
-
-    # {:ok, assign(socket, :weights, list_weights())}
   end
 
   @impl true
@@ -67,5 +65,34 @@ defmodule HealthTrackrWeb.WeightLive.Index do
     Weights.list_weights()
   end
 
+  def handle_info({:weight_created, weight}, socket) do
+    socket =
+      update(
+        socket,
+        :weights,
+        fn weights -> [weight | weights] end
+      )
 
+    {:noreply, update_chart(socket)}
+  end
+
+  def handle_info({:weight_updated, weight}, socket) do
+    # Find the matching id in the current list of
+    # data, change it, and update the list of data:
+    socket =
+      update(socket, :weights, fn weights ->
+        for w <- weights do
+          case w.id == weight.id do
+            true -> weight
+            _ -> w
+          end
+        end
+      end)
+
+    {:noreply, update_chart(socket)}
+  end
+
+  defp update_chart(socket) do
+    push_event(socket, "update-chart", %{})
+  end
 end

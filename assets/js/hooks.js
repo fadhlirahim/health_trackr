@@ -10,6 +10,10 @@ Hooks.LineChart = {
     this.handleEvent("new-point", ({ label, value }) => {
       this.chart.addPoint(label, value)
     })
+
+    this.handleEvent("update-chart", ({}) => {
+      this.chart.updateChart()
+    })
   }
 }
 

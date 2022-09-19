@@ -2,6 +2,7 @@ defmodule HealthTrackrWeb.WeightLive.FormComponent do
   use HealthTrackrWeb, :live_component
 
   alias HealthTrackr.Weights
+  alias HealthTrackr.Weights.Weight
 
   @impl true
   def update(%{weight: weight} = assigns, socket) do
@@ -11,6 +12,31 @@ defmodule HealthTrackrWeb.WeightLive.FormComponent do
      socket
      |> assign(assigns)
      |> assign(:changeset, changeset)}
+  end
+
+  def render(assigns) do
+    ~H"""
+    <div>
+      <.form
+        let={f}
+        for={@changeset}
+        id="weight-form"
+        phx-target={@myself}
+        phx-change="validate"
+        phx-submit="save">
+
+        <.form_field type="date_input" form={f} field={:date} />
+        <.form_field type="number_input" form={f} field={:weight} placeholder="in KG" step="any" />
+
+        <div class="flex justify-end">
+          <.button color="primary"
+            type="submit"
+            phx_disable_with="Saving..."
+            label="Save" />
+        </div>
+      </.form>
+    </div>
+    """
   end
 
   @impl true

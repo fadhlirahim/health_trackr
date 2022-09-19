@@ -10,6 +10,37 @@ defmodule HealthTrackr.Weights do
 
   @topic inspect(__MODULE__)
 
+  def subscribe do
+    Phoenix.PubSub.subscribe(HealthTrackr.PubSub, @topic)
+  end
+
+  defp broadcast({:ok, server}, event) do
+    Phoenix.PubSub.broadcast(
+      HealthTrackr.PubSub,
+      @topic,
+      {event, server}
+    )
+
+    {:ok, server}
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  def list_weights(criteria) when is_list(criteria) do
+    query = from(v in Weight)
+
+    Enum.reduce(criteria, query, fn
+      {:paginate, %{page: page, per_page: per_page}}, query ->
+        from q in query,
+          offset: ^((page - 1) * per_page),
+          limit: ^per_page
+
+      {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
+        from q in query, order_by: [{^sort_order, ^sort_by}]
+    end)
+    |> Repo.all()
+  end
+
   @doc """
   Returns the list of weights.
 
@@ -20,7 +51,7 @@ defmodule HealthTrackr.Weights do
 
   """
   def list_weights do
-    Repo.all(from(w in Weight, order_by: [asc: w.id]))
+    Repo.all(from(w in Weight, order_by: [asc: w.date]))
   end
 
   @doc """
@@ -55,6 +86,7 @@ defmodule HealthTrackr.Weights do
     %Weight{}
     |> Weight.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:weight_created)
   end
 
   @doc """
@@ -73,6 +105,7 @@ defmodule HealthTrackr.Weights do
     weight
     |> Weight.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:weight_updated)
   end
 
   @doc """
@@ -103,20 +136,4 @@ defmodule HealthTrackr.Weights do
   def change_weight(%Weight{} = weight, attrs \\ %{}) do
     Weight.changeset(weight, attrs)
   end
-
-  def subscribe do
-    Phoenix.PubSub.subscribe(HealthTrackr.PubSub, @topic)
-  end
-
-  defp broadcast({:ok, server}, event) do
-    Phoenix.PubSub.broadcast(
-      HealthTrackr.PubSub,
-      @topic,
-      {event, server}
-    )
-
-    {:ok, server}
-  end
-
-  defp broadcast({:error, _reason} = error, _event), do: error
 end
