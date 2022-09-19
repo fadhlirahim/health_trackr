@@ -1,47 +1,4 @@
 body {
-  @apply antialiased relative bg-gray-200 font-sans;
+  @apply antialiased relative bg-gray-700 font-sans;
 }
 
-header {
-  @apply mb-8;
-}
-
-h1 {
-  @apply text-center text-gray-900 font-extrabold text-4xl mb-8;
-}
-
-ul.examples {
-  @apply mt-8 text-2xl mx-auto max-w-xs list-disc;
-
-  li {
-    @apply mt-3;
-
-    a {
-      @apply underline;
-    }
-  }
-}
-
-.icon {
-  fill: currentColor;
-}
-
-header {
-  section {
-    @apply m-4 flex justify-end;
-  }
-
-  nav {
-    ul {
-      @apply flex justify-between;
-
-      li {
-        @apply mx-2 text-lg text-gray-700;
-
-        a:hover {
-          @apply underline;
-        }
-      }
-    }
-  }
-}

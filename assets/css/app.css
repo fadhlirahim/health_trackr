@@ -4,9 +4,9 @@
 
 @import "./custom.css";
 
-@import "./phoenix.css";
-
 @import "./petalplus.css";
+
+@import "./phoenix.css";
 
 @import "tailwindcss/utilities";
 
