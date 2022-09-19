@@ -2,7 +2,6 @@ defmodule HealthTrackrWeb.WeightLive.FormComponent do
   use HealthTrackrWeb, :live_component
 
   alias HealthTrackr.Weights
-  alias HealthTrackr.Weights.Weight
 
   @impl true
   def update(%{weight: weight} = assigns, socket) do
@@ -14,6 +13,7 @@ defmodule HealthTrackrWeb.WeightLive.FormComponent do
      |> assign(:changeset, changeset)}
   end
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div>

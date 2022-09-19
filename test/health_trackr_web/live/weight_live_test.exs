@@ -4,8 +4,8 @@ defmodule HealthTrackrWeb.WeightLiveTest do
   import Phoenix.LiveViewTest
   import HealthTrackr.WeightsFixtures
 
-  @create_attrs %{date: "11/09/2022", weight: 120.5}
-  @update_attrs %{date: "11/09/2022", weight: 456.7}
+  @create_attrs %{date: ~D[2022-09-22], weight: 99}
+  @update_attrs %{date: ~D[2022-09-22], weight: 88}
   @invalid_attrs %{date: nil, weight: nil}
 
   defp create_weight(_) do
@@ -33,7 +33,7 @@ defmodule HealthTrackrWeb.WeightLiveTest do
 
       assert index_live
              |> form("#weight-form", weight: @invalid_attrs)
-             |> render_change() =~ "blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         index_live
@@ -54,11 +54,11 @@ defmodule HealthTrackrWeb.WeightLiveTest do
 
       assert index_live
              |> form("#weight-form", weight: @invalid_attrs)
-             |> render_change() =~ "blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         index_live
-        |> form("#weight-form", weight: @update_attrs)
+        |> form("#weight-form", %{weight: @update_attrs})
         |> render_submit()
         |> follow_redirect(conn, Routes.weight_index_path(conn, :index))
 
@@ -92,13 +92,13 @@ defmodule HealthTrackrWeb.WeightLiveTest do
 
       assert show_live
              |> form("#weight-form", weight: @invalid_attrs)
-             |> render_change() =~ "blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         show_live
         |> form("#weight-form", weight: @update_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.weight_index_path(conn, :index))
+        |> follow_redirect(conn, Routes.weight_show_path(conn, :show, weight))
 
       assert html =~ "Weight updated successfully"
     end
