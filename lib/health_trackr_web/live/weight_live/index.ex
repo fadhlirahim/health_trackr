@@ -105,7 +105,7 @@ defmodule HealthTrackrWeb.WeightLive.Index do
 
   defp paginate_params(socket, params) do
     page = param_to_integer(params["page"], 1)
-    per_page = param_to_integer(params["per_page"], 5)
+    per_page = param_to_integer(params["per_page"], 14)
 
     paginate_options = %{page: page, per_page: per_page}
 
