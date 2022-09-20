@@ -15,7 +15,7 @@ Todo
 - [X] Pagination
 - [ ] Sort
 
-![Screenshot 2022-09-19 at 5 37 34 PM](https://user-images.githubusercontent.com/4056/190990506-bbf8cbab-58a5-4cb9-a569-63dac311a417.png)
+![Screenshot 2022-09-20 at 5 04 43 PM](https://user-images.githubusercontent.com/4056/191216827-0f5655b7-8e9c-426a-afd1-d1184d32a0ad.png)
 
 
 To start your Phoenix server:
