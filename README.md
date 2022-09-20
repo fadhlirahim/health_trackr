@@ -5,6 +5,7 @@ Consolidating my Phoenix LiveView knowledge after learning from PragStudio Phoen
 Using:
 
 * Phoenix 1.6
+* Tailwind.css
 * Petal Components
 * Chart.js
 
