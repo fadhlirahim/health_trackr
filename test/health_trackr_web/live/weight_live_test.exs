@@ -107,6 +107,32 @@ defmodule HealthTrackrWeb.WeightLiveTest do
       assert has_element?(view, weight_row(a))
       assert has_element?(view, weight_row(b))
     end
+
+    test "clicking next, previous, and page links patch the URL", %{conn: conn} do
+      _a = create_iweight(88.8)
+      _b = create_iweight(80.1)
+      _c = create_iweight(79.4)
+
+      {:ok, view, _html} = live(conn, "/weights?page=1&per_page=1")
+
+      view
+      |> element("a", "Next")
+      |> render_click()
+
+      assert_patched(view, "/weights?page=2&per_page=1")
+
+      view
+      |> element("a", "Previous")
+      |> render_click()
+
+      assert_patched(view, "/weights?page=1&per_page=1")
+
+      view
+      |> element("a", "2")
+      |> render_click()
+
+      assert_patched(view, "/weights?page=2&per_page=1")
+    end
   end
 
   describe "Show" do
