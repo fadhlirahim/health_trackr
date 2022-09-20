@@ -51,7 +51,7 @@
       </.td>
       <.td>
         <span><%= live_patch "Edit", to: Routes.weight_index_path(@socket, :edit, weight) %></span>
-        <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: weight.id, data: [confirm: "Are you sure?"] %></span>
+        <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: weight.id, class: "ml-4" %></span>
       </.td>
     </.tr>
   <% end %>

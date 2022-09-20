@@ -45,21 +45,9 @@ defmodule HealthTrackrWeb.WeightLive.Index do
   end
 
   defp apply_action(socket, :index, params) do
-    page = param_to_integer(params["page"], 1)
-    per_page = param_to_integer(params["per_page"], 5)
-
-    paginate_options = %{page: page, per_page: per_page}
-
-    weights =
-      Weights.list_weights(
-        paginate: paginate_options
-      )
-
-    socket
+    paginate_params(socket, params)
     |> assign(:page_title, "Listing Weights")
     |> assign(:weight, nil)
-    |> assign(:options, paginate_options)
-    |> assign(:weights, weights)
   end
 
   @impl true
@@ -67,7 +55,12 @@ defmodule HealthTrackrWeb.WeightLive.Index do
     weight = Weights.get_weight!(id)
     {:ok, _} = Weights.delete_weight(weight)
 
-    {:noreply, assign(socket, :weights, list_weights())}
+    params = %{
+      "page" => "#{socket.assigns.options.page}",
+      "per_page" => "#{socket.assigns.options.per_page}"
+      }
+
+    {:noreply, paginate_params(socket, params)}
   end
 
   @impl true
@@ -108,6 +101,24 @@ defmodule HealthTrackrWeb.WeightLive.Index do
 
   defp update_chart(socket) do
     push_event(socket, "update-chart", %{})
+  end
+
+  defp paginate_params(socket, params) do
+    page = param_to_integer(params["page"], 1)
+    per_page = param_to_integer(params["per_page"], 5)
+
+    paginate_options = %{page: page, per_page: per_page}
+
+    weights =
+      Weights.list_weights(
+        paginate: paginate_options
+      )
+
+    socket =
+      assign(socket,
+        options: paginate_options,
+        weights: weights
+      )
   end
 
   defp pagination_link(socket, text, page, options, class) do
