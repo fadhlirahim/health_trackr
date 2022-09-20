@@ -17,7 +17,6 @@ defmodule HealthTrackrWeb.Router do
   scope "/", HealthTrackrWeb do
     pipe_through :browser
 
-    live "/", WeightLive.Index, :index
     live "/weights", WeightLive.Index, :index
     live "/weights/new", WeightLive.Index, :new
     live "/weights/:id/edit", WeightLive.Index, :edit

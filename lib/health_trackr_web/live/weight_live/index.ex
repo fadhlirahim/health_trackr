@@ -21,8 +21,10 @@ defmodule HealthTrackrWeb.WeightLive.Index do
          values: values
        },
        current_reading: List.last(labels),
-       weights: list_weights()
-     )}
+       total_weights: Weights.count_weights()
+     ),
+     temporary_assigns: [weights: []]
+    }
   end
 
   @impl true
@@ -42,10 +44,22 @@ defmodule HealthTrackrWeb.WeightLive.Index do
     |> assign(:weight, %Weight{})
   end
 
-  defp apply_action(socket, :index, _params) do
+  defp apply_action(socket, :index, params) do
+    page = param_to_integer(params["page"], 1)
+    per_page = param_to_integer(params["per_page"], 5)
+
+    paginate_options = %{page: page, per_page: per_page}
+
+    weights =
+      Weights.list_weights(
+        paginate: paginate_options
+      )
+
     socket
     |> assign(:page_title, "Listing Weights")
     |> assign(:weight, nil)
+    |> assign(:options, paginate_options)
+    |> assign(:weights, weights)
   end
 
   @impl true
@@ -94,5 +108,26 @@ defmodule HealthTrackrWeb.WeightLive.Index do
 
   defp update_chart(socket) do
     push_event(socket, "update-chart", %{})
+  end
+
+  defp pagination_link(socket, text, page, options, class) do
+    live_patch(text,
+      to:
+        Routes.weight_index_path(socket, :index,
+          page: page,
+          per_page: options.per_page),
+      class: class
+    )
+  end
+
+  defp param_to_integer(nil, default_value), do: default_value
+  defp param_to_integer(param, default_value) do
+    case Integer.parse(param) do
+      {number, _} ->
+        number
+
+      :error ->
+        default_value
+    end
   end
 end

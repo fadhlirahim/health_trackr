@@ -14,14 +14,14 @@ defmodule HealthTrackr.Weights do
     Phoenix.PubSub.subscribe(HealthTrackr.PubSub, @topic)
   end
 
-  defp broadcast({:ok, server}, event) do
+  defp broadcast({:ok, weight}, event) do
     Phoenix.PubSub.broadcast(
       HealthTrackr.PubSub,
       @topic,
-      {event, server}
+      {event, weight}
     )
 
-    {:ok, server}
+    {:ok, weight}
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error
@@ -39,6 +39,10 @@ defmodule HealthTrackr.Weights do
         from q in query, order_by: [{^sort_order, ^sort_by}]
     end)
     |> Repo.all()
+  end
+
+  def count_weights do
+    Repo.aggregate(Weight, :count, :id)
   end
 
   @doc """
