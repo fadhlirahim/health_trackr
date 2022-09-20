@@ -5,13 +5,14 @@ Consolidating my Phoenix LiveView knowledge after learning from PragStudio Phoen
 Using:
 
 * Phoenix 1.6
+* Tailwind.css
 * Petal Components
 * Chart.js
 
 Todo
 - [X] Petal Components Integration
 - [X] Chart.js, Hooks Integration
-- [ ] Pagination
+- [X] Pagination
 - [ ] Sort
 
 ![Screenshot 2022-09-19 at 5 37 34 PM](https://user-images.githubusercontent.com/4056/190990506-bbf8cbab-58a5-4cb9-a569-63dac311a417.png)

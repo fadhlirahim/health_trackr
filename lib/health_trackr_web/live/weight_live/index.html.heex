@@ -51,8 +51,45 @@
       </.td>
       <.td>
         <span><%= live_patch "Edit", to: Routes.weight_index_path(@socket, :edit, weight) %></span>
-        <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: weight.id, data: [confirm: "Are you sure?"] %></span>
+        <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: weight.id, class: "ml-4" %></span>
       </.td>
     </.tr>
   <% end %>
 </.table>
+
+<div class="flex justify-center m-1">
+  <div class="inline-flex -space-x-px text-sm font-medium">
+    <%= if @options.page > 1 do %>
+      <%= pagination_link(@socket,
+                          "Previous",
+                          @options.page - 1,
+                          @options,
+                          "mr-2 inline-flex items-center justify-center rounded leading-5 px-2.5
+                           py-2 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800
+                          border dark:border-gray-700 border-gray-200 text-gray-400 hover:text-gray-800") %>
+    <% end %>
+    <%= for i <- (@options.page - 2)..(@options.page + 2), i > 0 do %>
+      <%= if i <= ceil(@total_weights / @options.per_page) do %>
+        <%= pagination_link(@socket,
+                            i,
+                            i,
+                            @options,
+                            "inline-flex items-center justify-center leading-5 px-3.5 py-2 border
+                            border-gray-200 dark:border-gray-700 bg-white text-gray-600 hover:bg-gray-50
+                            hover:text-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-400 rounded-l
+                            #{(if i == @options.page, do: "border border-gray-200 dark:border-gray-700 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300 rounded-l")}"
+                            ) %>
+      <% end %>
+    <% end %>
+
+    <%= if (@options.page * @options.per_page) < @total_weights do %>
+      <%= pagination_link(@socket,
+                          "Next",
+                          @options.page + 1,
+                          @options,
+                          "mr-2 inline-flex items-center justify-center rounded leading-5 px-2.5
+                           py-2 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800
+                          border dark:border-gray-700 border-gray-200 text-gray-400 hover:text-gray-800") %>
+    <% end %>
+  </div>
+</div>

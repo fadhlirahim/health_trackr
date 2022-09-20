@@ -13,6 +13,18 @@ defmodule HealthTrackrWeb.WeightLiveTest do
     %{weight: weight}
   end
 
+  defp create_iweight(weight) do
+    {:ok, weight} =
+      HealthTrackr.Weights.create_weight(%{
+        date: ~D[2022-09-22],
+        weight: weight
+      })
+
+    weight
+  end
+
+  defp weight_row(weight), do: "#weight-#{weight.id}"
+
   describe "Index" do
     setup [:create_weight]
 
@@ -66,10 +78,60 @@ defmodule HealthTrackrWeb.WeightLiveTest do
     end
 
     test "deletes weight in listing", %{conn: conn, weight: weight} do
+      create_iweight(44.4)
+
       {:ok, index_live, _html} = live(conn, Routes.weight_index_path(conn, :index))
 
       assert index_live |> element("#weight-#{weight.id} a", "Delete") |> render_click()
       refute has_element?(index_live, "#weight-#{weight.id}")
+    end
+  end
+
+  describe "Pagination" do
+    test "paginates using the options in the URL", %{conn: conn} do
+      a = create_iweight(44.4)
+      b = create_iweight(55.5)
+
+      {:ok, view, _html} = live(conn, "/weights?page=1&per_page=1")
+
+      assert has_element?(view, weight_row(a))
+      refute has_element?(view, weight_row(b))
+
+      {:ok, view, _html} = live(conn, "/weights?page=2&per_page=1")
+
+      refute has_element?(view, weight_row(a))
+      assert has_element?(view, weight_row(b))
+
+      {:ok, view, _html} = live(conn, "/weights?page=1&per_page=2")
+
+      assert has_element?(view, weight_row(a))
+      assert has_element?(view, weight_row(b))
+    end
+
+    test "clicking next, previous, and page links patch the URL", %{conn: conn} do
+      _a = create_iweight(88.8)
+      _b = create_iweight(80.1)
+      _c = create_iweight(79.4)
+
+      {:ok, view, _html} = live(conn, "/weights?page=1&per_page=1")
+
+      view
+      |> element("a", "Next")
+      |> render_click()
+
+      assert_patched(view, "/weights?page=2&per_page=1")
+
+      view
+      |> element("a", "Previous")
+      |> render_click()
+
+      assert_patched(view, "/weights?page=1&per_page=1")
+
+      view
+      |> element("a", "2")
+      |> render_click()
+
+      assert_patched(view, "/weights?page=2&per_page=1")
     end
   end
 
