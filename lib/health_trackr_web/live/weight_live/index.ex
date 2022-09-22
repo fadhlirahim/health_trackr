@@ -38,8 +38,8 @@ defmodule HealthTrackrWeb.WeightLive.Index do
     |> assign(:weight, Weights.get_weight!(id))
   end
 
-  defp apply_action(socket, :new, _params) do
-    socket
+  defp apply_action(socket, :new, params) do
+    paginate_params(socket, params)
     |> assign(:page_title, "New Weight")
     |> assign(:weight, %Weight{})
   end
